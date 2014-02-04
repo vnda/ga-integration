@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  ga: MyString
+  token: MyString
+  site: MyString
+
+two:
+  name: MyString
+  ga: MyString
+  token: MyString
+  site: MyString

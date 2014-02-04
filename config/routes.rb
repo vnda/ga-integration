@@ -1,9 +1,14 @@
 Gaintegration::Application.routes.draw do
+  resources :stores
+
+  devise_for :users
+
+  post 'sender/send_transaction' => 'sender#send_transaction'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'stores#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
