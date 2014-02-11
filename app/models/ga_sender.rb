@@ -4,10 +4,11 @@
 			@json = json
 			@store = store
 			@sender = Gabba::Gabba.new(@store.ga, @store.site)
-			@multiplier = json['status'] == 'confirmed' ? 1 : -1
+			@multiplier = json['status'] == 'canceled' ? -1 : 1
 		end
 
 	  def send!
+	  	return if(@json['status'] == 'confirmed')
 	  	send_itens
 	  	send_transaction
 
