@@ -20,10 +20,10 @@
 	  def send_itens
 	  	order_id = @json["code"]
 	  	@json["items"].each do |item|
-	  		puts "Item: #{order_id} - #{item["reference"]} - #{item["price"].to_i * @multiplier} - #{item['quantity']} - #{item['product_name']} #{item['variant_name']}"
+	  		puts "Item: #{order_id} - #{item['reference']} - #{'%.2f' % (item["price"].to_f * @multiplier)} - #{item['quantity']} - #{item['product_name']} #{item['variant_name']}"
 	  		@sender.add_item(order_id, 
 	  			item["reference"], 
-	  			item["price"].to_i * @multiplier, 
+	  			'%.2f' % (item["price"].to_f * @multiplier), 
 	  			item['quantity'], 
 	  			item['product_name'], item['variant_name'])
 	  	end 
@@ -31,8 +31,8 @@
 
 	  def send_transaction
 	  	address = "#{@json['street_name']}, #{@json['complement']} - #{@json['zip']}"
-	  	puts "Transaction: #{@json["code"]}, #{@json['total'].to_i * @multiplier}, #{@store.name}, #{0.0}, #{address}, #{@json['city']}, #{@json['state']}, #{'Brasil'}"
-	  	@sender.transaction(@json["code"], @json['total'].to_i * @multiplier, @json['email'], 
+	  	puts "Transaction: #{@json["code"]}, #{'%.2f' % (@json['total'].to_f * @multiplier)}, #{@store.name}, #{0.0}, #{address}, #{@json['city']}, #{@json['state']}, #{'Brasil'}"
+	  	@sender.transaction(@json["code"], '%.2f' % (@json['total'].to_f * @multiplier), @json['email'], 
 	  		0.0, @json['shipping_price'], "#{@json['city']} - #{@json['state']}", address, "Brasil")
 	  end
 

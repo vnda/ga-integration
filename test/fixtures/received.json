@@ -1,0 +1,72 @@
+{
+"id":202,
+"code":"F2CE2094E0",
+"token":"abe163789d872bca324e685abee2658289960b5e650c5a6c89dbe4bc2ff2e990",
+"status":"received",
+"first_name":"Francisco",
+"last_name":"Cortivo",
+"email":"francisco@vnda.com.br",
+"cpf":"00596224079",
+"zip":"99050030",
+"street_name":"Rua Uruguai, 1538",
+"street_number":"1",
+"complement":"",
+"neighborhood":"centro",
+"city":"Passo Fundo",
+"state":"RS",
+"client_id":15,
+"slip":true,
+"slip_url":"https://desenvolvedor.moip.com.br/sandbox/Instrucao.do?token=92W0U1R3A1W2B2G0E1J33289Z2T138V6W4W0N0P0A0M0Q0O4T2O7C8X6T5F1",
+"slip_token":null,
+"payment_method":"Boleto",
+"shipping_method":"correios_sedex",
+"shipping_price":9.05,
+"subtotal":159.0,
+"discount_price":79.5,
+"total":88.55,
+"tracking_code":null,
+"updated_at":"2014-01-28T10:36:08-02:00",
+"received_at":"2013-12-20T13:29:21-02:00",
+"confirmed_at":"2013-12-26T08:50:58-02:00",
+"shipped_at":null,
+"shipping_tracked_at":null,
+"delivered_at":null,
+"canceled_at":null,
+"emails":{
+	"received_sent_at":"2013-12-20T13:30:06-02:00",
+	"confirmed_sent_at":"2013-12-26T08:51:03-02:00",
+	"shipped_sent_at":null,
+	"delivered_sent_at":null,
+	"canceled_sent_at":null},
+"installments":1,
+"phone_area":"54",
+"phone":"81128447",
+"cellphone_area":"54",
+"cellphone":"81128447",
+"items":[
+	{"id":292,
+	"reference":"RT001",
+	"product_name":"Cueca para Incontinência Urinária",
+	"sku":"12001",
+	"variant_name":"Tamanho: PP | Cor: Branca",
+	"quantity":1,
+	"price":159.0,
+	"subtotal":159.0,
+	"total":159.0,
+	"picture_url":"//a1.lvh.me/retex/2013/12/20/13_29_55_135_DSC00786.jpg",
+	"weight":"0.1"}
+]}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
