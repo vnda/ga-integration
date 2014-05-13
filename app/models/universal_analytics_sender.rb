@@ -27,7 +27,7 @@ class UniversalAnalyticsSender
 		puts "Transaction: #{@json["code"]}, #{'%.2f' % (@json['total'].to_f * @multiplier)}, #{@store.name}, #{0.0}"
 		RestClient.get(ECOMMERCE_TRACKING_URL, params: {
 	      v: 1,
-	      tid: @store.ga,
+	      tid: @store.ga_un,
 	      cid: @cid || DEFAULT_CLIENT_ID, 
 	      t: 'transaction',
 	      ti: @json["code"],
@@ -44,7 +44,7 @@ class UniversalAnalyticsSender
 			puts "Item: #{@json["code"]} - #{item['reference']} - #{'%.2f' % (item["price"].to_f * @multiplier)} - #{item['quantity']} - #{item['product_name']} #{item['variant_name']}"
 			RestClient.get(ECOMMERCE_TRACKING_URL, params: {
 					v: 1,
-			    tid: @store.ga,
+			    tid: @store.ga_un,
 			    cid: @cid || DEFAULT_CLIENT_ID, 
 			    t: 'item',
 			    ti: @json["code"],
