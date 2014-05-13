@@ -5,7 +5,8 @@ class SenderController < ActionController::Base
     json = JSON.parse(request.body.read)
 
     if(store and json)
-    	GaSender.new(json, store).send!
+    	#GaSender.new(json, store).send!
+    	UniversalAnalyticsSender.new(json, store).send!
 	  end
 	  render json: 'ok'
   end
