@@ -51,6 +51,6 @@ class StoresController < ApplicationController
     end
 
     def store_params
-      params.require(:store).permit(:name, :ga, :token, :site)
+      params.require(:store).permit(:name, :ga, :ga_un, :token, :site)
     end
 end
