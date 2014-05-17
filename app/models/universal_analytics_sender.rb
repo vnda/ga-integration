@@ -19,42 +19,50 @@ class UniversalAnalyticsSender
 	private 
 
 	def set_client_id
-		@cid = @json['extra_fields'].select{|field| field['name'] == 'cid'}.first
-    puts "cid not present" unless @cid
-	end
+		ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first
+		ga_cookie_value = ga_cookie['value'] if ga_cookie
+		@client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
+    @client_id ? puts("CID: #{@client_id}") : puts("cid not present")
+  end
 
 	def send_transaction
+		transaction = {
+      v: 1,
+      tid: @store.ga_un,
+      cid: @client_id || DEFAULT_CLIENT_ID, 
+      t: 'transaction',
+      ti: @json["code"],
+      ta: @json['email'],
+      tr: '%.2f' % (@json['total'].to_f * @multiplier), 
+      tt: 0.0,
+      ts: @json['shipping_price']
+    }
+    
+		RestClient.get(ECOMMERCE_TRACKING_URL, params: transaction)
+
 		puts "Transaction: #{@json["code"]}, #{'%.2f' % (@json['total'].to_f * @multiplier)}, #{@store.name}, #{0.0}"
-		RestClient.get(ECOMMERCE_TRACKING_URL, params: {
-	      v: 1,
-	      tid: @store.ga_un,
-	      cid: @cid || DEFAULT_CLIENT_ID, 
-	      t: 'transaction',
-	      ti: @json["code"],
-	      ta: @json['email'],
-	      tr: '%.2f' % (@json['total'].to_f * @multiplier), 
-	      tt: 0.0,
-	      ts: @json['shipping_price']
-	    }
-		)
+    puts transaction
 	end
 
 	def send_items
 		@json["items"].each do |item|
+			transaction_item = {
+				v: 1,
+		    tid: @store.ga_un,
+		    cid: @client_id || DEFAULT_CLIENT_ID, 
+		    t: 'item',
+		    ti: @json["code"],
+		    in: item['product_name'],
+		    ic: item["reference"],
+				iv: item['variant_name'],
+				ip: '%.2f' % (item["price"].to_f * @multiplier), 
+				iq: item['quantity']
+			}
+			
+			RestClient.get(ECOMMERCE_TRACKING_URL, params: transaction_item)
+
 			puts "Item: #{@json["code"]} - #{item['reference']} - #{'%.2f' % (item["price"].to_f * @multiplier)} - #{item['quantity']} - #{item['product_name']} #{item['variant_name']}"
-			RestClient.get(ECOMMERCE_TRACKING_URL, params: {
-					v: 1,
-			    tid: @store.ga_un,
-			    cid: @cid || DEFAULT_CLIENT_ID, 
-			    t: 'item',
-			    ti: @json["code"],
-			    in: item['product_name'],
-			    ic: item["reference"],
-					iv: item['variant_name'],
-					ip: '%.2f' % (item["price"].to_f * @multiplier), 
-					iq: item['quantity']
-				}
-			)
+			puts transaction_item
 		end		
 	end
 
