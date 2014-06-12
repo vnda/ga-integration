@@ -1,13 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  ga: MyString
-  token: MyString
-  site: MyString
-
-two:
-  name: MyString
-  ga: MyString
-  token: MyString
-  site: MyString
+  name: Test store
+  ga:
+  token: VeoYDOMnok3K4l3w84pQkw
+  site: example.com
+  ga_un: UA-51911200-1
