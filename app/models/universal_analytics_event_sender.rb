@@ -32,7 +32,7 @@ class UniversalAnalyticsEventSender
   end
 
   def create_event
-  	event = {
+    event = {
       v: 1,
       tid: @store.ga_un,
       cid: @client_id || DEFAULT_CLIENT_ID,
@@ -41,13 +41,26 @@ class UniversalAnalyticsEventSender
     }
 
     case @event_type
-  	when 'product-viewed' then event.merge(ea: 'Produto Visualizado', el: @json['reference'])
-  	when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
-		when 'product-added-to-cart' then event.merge(ea: 'Adicionado ao Carrinho', el: @json['reference'])
-		when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
-	  end
-	end
-
-  
-
+    when 'product-viewed'
+      event.merge(
+        t: 'event',
+        pa: 'detail',
+        pr1id: @json['reference'],
+        pr1nm: @json['name'],
+        pr1pr: @json['price']
+      )
+    when 'product-added-to-cart'
+      event.merge(
+        t: 'event',
+        pa: 'add',
+        pr1id: @json['reference'],
+        pr1nm: @json['name'],
+        pr1pr: @json['price'],
+        pr1va: @json['variant_name'],
+        pr1qt: @json['quantity']
+      )
+    when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
+    when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
+    end
+  end
 end

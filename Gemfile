@@ -14,4 +14,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
+group :test do
+  gem 'webmock'
+  gem 'vcr'
+end
+
 gem 'rails_12factor', group: :production
