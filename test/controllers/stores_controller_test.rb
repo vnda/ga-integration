@@ -8,7 +8,6 @@ class StoresControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:stores)
   end
 
   test "should get new" do
@@ -21,12 +20,7 @@ class StoresControllerTest < ActionController::TestCase
       post :create, store: { ga: @store.ga, name: @store.name, site: @store.site, token: @store.token }
     end
 
-    assert_redirected_to store_path(assigns(:store))
-  end
-
-  test "should show store" do
-    get :show, id: @store
-    assert_response :success
+    assert_redirected_to stores_path
   end
 
   test "should get edit" do
@@ -36,7 +30,7 @@ class StoresControllerTest < ActionController::TestCase
 
   test "should update store" do
     patch :update, id: @store, store: { ga: @store.ga, name: @store.name, site: @store.site, token: @store.token }
-    assert_redirected_to store_path(assigns(:store))
+    assert_redirected_to stores_path
   end
 
   test "should destroy store" do
