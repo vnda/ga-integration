@@ -1,3 +1,3 @@
 class Store < ActiveRecord::Base
-	include Tokenable
+  include Tokenable
 end

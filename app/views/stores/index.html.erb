@@ -1,35 +1,31 @@
-<h1>Listing stores</h1>
+<header class="page-header clearfix">
+  <h3 class="pull-left" style="margin-top: 0">Lojas</h3>
+  <%= link_to icon_tag(:plus) + ' Nova Loja', new_store_path, class: 'btn btn-success pull-right' %>
+</header>
 
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Nome</th>
       <th>Ga</th>
       <th>Ga Universal</th>
       <th>Token</th>
       <th>Site</th>
-      <th></th>
-      <th></th>
+      <th>URL API</th>
       <th></th>
     </tr>
   </thead>
-
   <tbody>
-    <% @stores.each do |store| %>
+    <% collection.each do |store| %>
       <tr>
-        <td><%= store.name %></td>
+        <td><%= link_to store.name, edit_store_path(store) %></td>
         <td><%= store.ga %></td>
         <td><%= store.ga_un %></td>
         <td><%= store.token %></td>
         <td><%= store.site %></td>
-        <td><%= link_to 'Show', store %></td>
-        <td><%= link_to 'Edit', edit_store_path(store) %></td>
-        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= sender_send_transaction_url(token: store.token) %></td>
+        <td><%= delete_action(store) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Store', new_store_path %>
