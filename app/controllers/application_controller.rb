@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
     not request.authorization.nil?
   end
 
+  def status
+    render text: 'OK'
+  end
+
   protected
 
   def authenticate!
