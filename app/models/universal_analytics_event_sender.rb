@@ -14,7 +14,7 @@ class UniversalAnalyticsEventSender
 		send_event
 	end
 
-	private 
+	private
 
 	def send_event
 		event = create_event
@@ -61,6 +61,8 @@ class UniversalAnalyticsEventSender
       )
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
+    when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
+    when 'capcha-verified' then event.merge(ea: 'Captcha verificado', el: @json['ip'])
     end
   end
 end
