@@ -25,9 +25,9 @@ class UniversalAnalyticsEventSender
 	end
 
 	def set_client_id
-		ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first if @json['extra_fields']
-		ga_cookie_value = ga_cookie['value'] if ga_cookie
-		@client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
+    if @json['analytics'] && @json['analytics']['_ga'].present?
+  		@client_id = @json['analytics']['_ga'].split(".").values_at(2,3).join(".")
+    end
     @client_id ? puts("CID: #{@client_id}") : puts("cid not present")
   end
 
@@ -43,21 +43,21 @@ class UniversalAnalyticsEventSender
     case @event_type
     when 'product-viewed'
       event.merge(
-        t: 'event',
+        ea: 'Produto Visualizado',
         pa: 'detail',
-        pr1id: @json['reference'],
-        pr1nm: @json['name'],
-        pr1pr: @json['price']
+        pr1id: @json['resource']['reference'],
+        pr1nm: @json['resource']['name'],
+        pr1pr: @json['resource']['price']
       )
     when 'product-added-to-cart'
       event.merge(
-        t: 'event',
+        ea: 'Adicionado ao Carrinho',
         pa: 'add',
-        pr1id: @json['reference'],
-        pr1nm: @json['name'],
-        pr1pr: @json['price'],
-        pr1va: @json['variant_name'],
-        pr1qt: @json['quantity']
+        pr1id: @json['resource']['reference'],
+        pr1nm: @json['resource']['name'],
+        pr1pr: @json['resource']['price'],
+        pr1va: @json['resource']['variant_name'],
+        pr1qt: @json['resource']['quantity']
       )
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
