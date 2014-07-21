@@ -53,4 +53,50 @@ class GaEcommerceTest < ActiveSupport::TestCase
     it.send!
     assert_requested(stub)
   end
+
+  def checkout_data
+    [
+      { 'reference' => 'P1', 'name' => 'Cueca', 'price' => 15.0, 'quantity' => 2 },
+      { 'reference' => 'P2', 'name' => 'Meia', 'price' => 12.0, 'quantity' => 3 },
+      { 'reference' => 'P3', 'name' => 'Cinto', 'price' => 78.0, 'quantity' => 1 }
+    ]
+  end
+
+  test 'checkout-1-cart' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(pa: 'checkout', cos: '1', pr1pr: '15.0', pr2pr: '12.0', pr3pr: '78.0'))
+    UniversalAnalyticsEventSender.new({ 'resource' => checkout_data }, store, 'checkout-1-cart').send!
+    assert_requested(stub)
+  end
+
+  test 'checkout-2-shipping-calc' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(pa: 'checkout', cos: '2', col: '20930-040'))
+    json = { 'zip_code' => '20930-040', 'resource' => checkout_data }
+    UniversalAnalyticsEventSender.new(json, store, 'checkout-2-shipping-calc').send!
+    assert_requested(stub)
+  end
+
+  test 'checkout-3-shipping-mode' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(pa: 'checkout', cos: '3', col: 'airplane'))
+    json = { 'shipping' => 'airplane', 'resource' => checkout_data }
+    UniversalAnalyticsEventSender.new(json, store, 'checkout-3-shipping-mode').send!
+    assert_requested(stub)
+  end
+
+  test 'checkout-4-address' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(pa: 'checkout', cos: '4'))
+    UniversalAnalyticsEventSender.new({ 'resource' => checkout_data }, store, 'checkout-4-address').send!
+    assert_requested(stub)
+  end
+
+  test 'checkout-5-payment' do
+        stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(pa: 'checkout', cos: '5', col: 'Visa'))
+    json = { 'payment' => 'Visa', 'resource' => checkout_data }
+    UniversalAnalyticsEventSender.new(json, store, 'checkout-5-payment').send!
+    assert_requested(stub)
+  end
 end
