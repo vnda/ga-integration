@@ -43,6 +43,7 @@ class UniversalAnalyticsEventSender
     case @event_type
     when 'product-viewed' then event.merge(product_data).merge(t: 'event', pa: 'detail')
     when 'product-added-to-cart' then event.merge(product_data).merge(t: 'event', pa: 'add')
+    when 'product-removed-from-cart' then event.merge(product_data).merge(t: 'event', pa: 'remove')
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
     when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
