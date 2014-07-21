@@ -20,15 +20,14 @@ class UniversalAnalyticsEventSender
     event = create_event
     RestClient.get(ENDPOINT_URL, params: event)
 
-    puts "Event sent"
-    puts event
+    Rails.logger.info("Event sent: #{event.inspect}")
   end
 
   def set_client_id
     ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first if @json['extra_fields']
     ga_cookie_value = ga_cookie['value'] if ga_cookie
     @client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
-    @client_id ? puts("CID: #{@client_id}") : puts("cid not present")
+    Rails.logger.info(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 
   def create_event
