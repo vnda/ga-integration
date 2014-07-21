@@ -1,7 +1,7 @@
 class UniversalAnalyticsEventSender
 
-	ENDPOINT_URL = 'http://www.google-analytics.com/collect'
-	DEFAULT_CLIENT_ID = '555'
+  ENDPOINT_URL = 'http://www.google-analytics.com/collect'
+  DEFAULT_CLIENT_ID = '555'
 
   def initialize(json, store, event_type)
     @json = json
@@ -9,25 +9,25 @@ class UniversalAnalyticsEventSender
     @event_type = event_type
   end
 
-	def send!
-		set_client_id
-		send_event
-	end
+  def send!
+    set_client_id
+    send_event
+  end
 
-	private
+  private
 
-	def send_event
-		event = create_event
-		RestClient.get(ENDPOINT_URL, params: event)
+  def send_event
+    event = create_event
+    RestClient.get(ENDPOINT_URL, params: event)
 
-		puts "Event sent"
+    puts "Event sent"
     puts event
-	end
+  end
 
-	def set_client_id
-		ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first if @json['extra_fields']
-		ga_cookie_value = ga_cookie['value'] if ga_cookie
-		@client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
+  def set_client_id
+    ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first if @json['extra_fields']
+    ga_cookie_value = ga_cookie['value'] if ga_cookie
+    @client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
     @client_id ? puts("CID: #{@client_id}") : puts("cid not present")
   end
 
