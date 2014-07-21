@@ -24,9 +24,9 @@ class UniversalAnalyticsEventSender
   end
 
   def set_client_id
-    ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first if @json['extra_fields']
-    ga_cookie_value = ga_cookie['value'] if ga_cookie
-    @client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
+    if @json['analytics'] && @json['analytics']['_ga'].present?
+      @client_id = @json['analytics']['_ga'].split(".").values_at(2,3).join(".")
+    end
     Rails.logger.info(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 
@@ -40,9 +40,9 @@ class UniversalAnalyticsEventSender
     }
 
     case @event_type
-    when 'product-viewed' then event.merge(product_data).merge(t: 'event', pa: 'detail')
-    when 'product-added-to-cart' then event.merge(product_data).merge(t: 'event', pa: 'add')
-    when 'product-removed-from-cart' then event.merge(product_data).merge(t: 'event', pa: 'remove')
+    when 'product-viewed' then event.merge(**product_data, ea: 'Produto Visualizado', pa: 'detail')
+    when 'product-added-to-cart' then event.merge(**product_data, ea: 'Adicionado ao Carrinho', pa: 'add')
+    when 'product-removed-from-cart' then event.merge(**product_data, ea: 'Removido do Carrinho', pa: 'remove')
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
     when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
@@ -52,12 +52,13 @@ class UniversalAnalyticsEventSender
   end
 
   def product_data
+    prod = @json['resource']
     {
-      pr1id: @json['reference'],
-      pr1nm: @json['name'],
-      pr1pr: @json['price'],
-      pr1va: @json['variant_name'],
-      pr1qt: @json['quantity']
+      pr1id: prod['reference'],
+      pr1nm: prod['name'],
+      pr1pr: prod['price'],
+      pr1va: prod['variant_name'],
+      pr1qt: prod['quantity']
     }.reject { |k, v| v.blank? }
   end
 end
