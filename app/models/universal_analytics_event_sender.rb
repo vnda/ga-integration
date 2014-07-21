@@ -41,28 +41,22 @@ class UniversalAnalyticsEventSender
     }
 
     case @event_type
-    when 'product-viewed'
-      event.merge(
-        t: 'event',
-        pa: 'detail',
-        pr1id: @json['reference'],
-        pr1nm: @json['name'],
-        pr1pr: @json['price']
-      )
-    when 'product-added-to-cart'
-      event.merge(
-        t: 'event',
-        pa: 'add',
-        pr1id: @json['reference'],
-        pr1nm: @json['name'],
-        pr1pr: @json['price'],
-        pr1va: @json['variant_name'],
-        pr1qt: @json['quantity']
-      )
+    when 'product-viewed' then event.merge(product_data).merge(t: 'event', pa: 'detail')
+    when 'product-added-to-cart' then event.merge(product_data).merge(t: 'event', pa: 'add')
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
     when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
     when 'capcha-verified' then event.merge(ea: 'Captcha verificado', el: @json['ip'])
     end
+  end
+
+  def product_data
+    {
+      pr1id: @json['reference'],
+      pr1nm: @json['name'],
+      pr1pr: @json['price'],
+      pr1va: @json['variant_name'],
+      pr1qt: @json['quantity']
+    }.reject { |k, v| v.blank? }
   end
 end
