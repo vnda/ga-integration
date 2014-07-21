@@ -37,4 +37,20 @@ class GaEcommerceTest < ActiveSupport::TestCase
     it.send!
     assert_requested(stub)
   end
+
+  test 'product-listed' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(il1nm: 'Produtos relacionados', il1pi1ps: '1', il1pi2ps: '2', il1pi3ps: '3'))
+    json = {
+      'list' => 'Produtos relacionados',
+      'resource' => [
+        { 'reference' => 'P1', 'name' => 'Cueca', 'price' => 15.0, 'position' => 1 },
+        { 'reference' => 'P2', 'name' => 'Meia', 'price' => 12.0, 'position' => 2 },
+        { 'reference' => 'P3', 'name' => 'Cinto', 'price' => 78.0, 'position' => 3 }
+      ]
+    }
+    it = UniversalAnalyticsEventSender.new(json, store, 'product-listed')
+    it.send!
+    assert_requested(stub)
+  end
 end
