@@ -48,6 +48,7 @@ class UniversalAnalyticsEventSender
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
     when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
     when 'capcha-verified' then event.merge(ea: 'Captcha verificado', el: @json['ip'])
+    else raise ArgumentError, "no such event: #{@event_type.inspect}"
     end
   end
 
