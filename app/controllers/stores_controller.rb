@@ -37,6 +37,22 @@ class StoresController < ApplicationController
     end
   end
 
+  def metrics
+    vid = GaReport.view_id_for_property(resource.ga_un)
+    data = GaReport.report(vid)
+
+    mapping = {
+      'ga:productSku' => :reference,
+      'ga:productDetailViews' => :detail_views,
+      'ga:productListViews' => :list_views,
+      'ga:productAddsToCart' => :adds_to_cart,
+      'ga:productRemovesFromCart' => :removes_from_cart
+    }
+
+    headers = data.column_headers.map { |ch| mapping[ch.name] }
+    render json: data.rows.map { |row| headers.zip(row).to_h }
+  end
+
   private
 
   def collection

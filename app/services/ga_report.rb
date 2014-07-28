@@ -1,11 +1,8 @@
-class GaReport
-  mattr_accessor :service_account_email, :p12_key_file, instance_writer: false
+module GaReport
+  extend self
+  mattr_accessor :service_account_email, :p12_key_file
 
-  def initialize(view_id)
-    @view_id = view_id
-  end
-
-  def report
+  def report(view_id)
     metrics = [
       'ga:productDetailViews',
       'ga:productListViews',
@@ -14,12 +11,31 @@ class GaReport
     ]
     # Parameters doc: https://developers.google.com/analytics/devguides/reporting/core/v3/reference#q_summary
     client.execute(api_method: analytics.data.ga.get, parameters: {
-      'ids'        => 'ga:' + @view_id,
+      'ids'        => 'ga:' + view_id,
       'start-date' => '2014-07-01',
       'end-date'   => '2014-07-28',
       'dimensions' => 'ga:productSku',
       'metrics'    => metrics.join(?,)
+    }).data
+  end
+
+  def view_id_for_property(property_id)
+    key = "analytics_view_id_#{property_id}_#{service_account_email.hash}"
+    if cached = Rails.cache.read(key)
+      return cached
+    end
+
+    res = client.execute(api_method: analytics.management.profiles.list, parameters: {
+      'accountId' => '~all',
+      'webPropertyId' => '~all',
+      'fields' => 'items(id,webPropertyId)'
     })
+    found_id = res.data.items.find { |i| i.web_property_id == property_id }.try(:id)
+
+    if found_id
+      Rails.cache.write(key, found_id)
+      found_id
+    end
   end
 
   private
