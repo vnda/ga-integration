@@ -17,3 +17,5 @@
 
 /config/database.yml
 /config/.secret-token
+/config/google_api.p12
+/config/google_api_account_email
