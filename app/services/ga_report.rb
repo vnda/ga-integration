@@ -1,6 +1,6 @@
 module GaReport
   extend self
-  mattr_accessor :service_account_email, :p12_key
+  attr_accessor :service_account_email, :p12_key
 
   def report(view_id)
     metrics = [
