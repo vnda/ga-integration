@@ -2,7 +2,7 @@ module GaReport
   extend self
   attr_accessor :service_account_email, :p12_key
 
-  def report(view_id)
+  def report(view_id:, sku:)
     metrics = [
       'ga:productDetailViews',
       'ga:productListViews',
@@ -15,6 +15,7 @@ module GaReport
       'start-date' => '2014-07-01',
       'end-date'   => '2014-07-28',
       'dimensions' => 'ga:productSku',
+      'filters'    => "ga:productSku==#{sku}",
       'metrics'    => metrics.join(?,)
     }).data
   end
