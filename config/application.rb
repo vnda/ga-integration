@@ -21,5 +21,10 @@ module Gaintegration
     config.i18n.enforce_available_locales = false
     config.i18n.default_locale = :'pt-BR'
     config.assets.enabled = false
+
+    config.google_api = {
+      p12_key: Base64.strict_decode64(ENV['GOOGLE_API_P12'].gsub(/\s+/, '')),
+      service_account_email: ENV['GOOGLE_API_ACCOUNT_EMAIL']
+    }
   end
 end

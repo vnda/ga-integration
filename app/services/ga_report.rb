@@ -1,6 +1,5 @@
 module GaReport
   extend self
-  attr_accessor :service_account_email, :p12_key
 
   def report(view_id:, sku:)
     metrics = [
@@ -21,7 +20,7 @@ module GaReport
   end
 
   def view_id_for_property(property_id)
-    key = "analytics_view_id_#{property_id}_#{service_account_email.hash}"
+    key = "analytics_view_id_#{property_id}_#{config[:service_account_email].hash}"
     if cached = Rails.cache.read(key)
       return cached
     end
@@ -41,17 +40,21 @@ module GaReport
 
   private
 
+  def config
+    Rails.application.config.google_api
+  end
+
   def client
     @client ||= begin
       c = Google::APIClient.new(application_name: Rails.application.engine_name)
 
-      key = Google::APIClient::KeyUtils.load_from_pkcs12(p12_key, 'notasecret')
+      key = Google::APIClient::KeyUtils.load_from_pkcs12(config[:p12_key], 'notasecret')
 
       c.authorization = Signet::OAuth2::Client.new(
         token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
         audience: 'https://accounts.google.com/o/oauth2/token',
         scope: 'https://www.googleapis.com/auth/analytics.readonly',
-        issuer: service_account_email,
+        issuer: config[:service_account_email],
         signing_key: key
       )
 
