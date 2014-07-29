@@ -39,6 +39,10 @@ class StoresController < ApplicationController
 
   def metrics
     vid = GaReport.view_id_for_property(resource.ga_un)
+    if vid.blank?
+      msg = "Current service account has no access to this property: #{GaReport.service_account_email}"
+      return render status: :forbidden, json: { error: msg }
+    end
     data = GaReport.report(vid)
 
     mapping = {
