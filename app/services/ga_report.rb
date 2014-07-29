@@ -1,6 +1,6 @@
 module GaReport
   extend self
-  mattr_accessor :service_account_email, :p12_key_file
+  mattr_accessor :service_account_email, :p12_key
 
   def report(view_id)
     metrics = [
@@ -44,7 +44,7 @@ module GaReport
     @client ||= begin
       c = Google::APIClient.new(application_name: Rails.application.engine_name)
 
-      key = Google::APIClient::KeyUtils.load_from_pkcs12(p12_key_file, 'notasecret')
+      key = Google::APIClient::KeyUtils.load_from_pkcs12(p12_key, 'notasecret')
 
       c.authorization = Signet::OAuth2::Client.new(
         token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
