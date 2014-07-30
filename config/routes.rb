@@ -1,8 +1,7 @@
 Gaintegration::Application.routes.draw do
   root 'stores#index'
-  resources :stores, except: [:show] do
-    resources :metrics, only: [:show]
-  end
+  resources :stores, except: [:show]
+  resources :metrics, only: [:show]
 
   get :status, to: 'application#status'
 
