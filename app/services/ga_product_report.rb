@@ -8,19 +8,45 @@ class GaProductReport
   end
 
   def as_json(*)
-    stats.merge(avg_position_per_list: avg_position_per_list)
+    results = []
+    batch = Google::APIClient::BatchRequest.new do |result|
+      results << result
+    end
+    batch.add(build_request(stats_request_params))
+    batch.add(build_request(position_per_list_request_params))
+
+    client.execute(batch)
+    stats_data, position_data = results.map { |r| result_data(r) }
+    stats = stats_process_result(stats_data)
+    position_per_list = position_per_list_process_result(position_data)
+
+    stats.merge(avg_position_per_list: position_per_list)
   end
 
-  def stats
-    data = get_report(
-      metrics: [
-        'ga:productDetailViews',
-        'ga:productListViews',
-        'ga:productAddsToCart',
-        'ga:productRemovesFromCart',
-      ].join(?,)
-    )
+  private
 
+  def build_request(params)
+    {
+      api_method: analytics.data.ga.get,
+      parameters: {
+        'ids'        => 'ga:' + view_id,
+        'start-date' => '30daysAgo',
+        'end-date'   => 'today',
+        'filters'    => "ga:productSku==#{@sku}"
+      }.merge(params.stringify_keys)
+    }
+  end
+
+  def stats_request_params
+    {
+      metrics: [
+        'ga:productDetailViews', 'ga:productListViews', 'ga:productAddsToCart',
+        'ga:productRemovesFromCart'
+      ].join(?,)
+    }
+  end
+
+  def stats_process_result(data)
     headers = data.column_headers.map(&:name)
     row = data.rows.empty? ? ([0] * headers.size) : data.rows.first
     hash = headers.zip(row.map(&:to_i)).to_h
@@ -34,12 +60,14 @@ class GaProductReport
     end
   end
 
-  def avg_position_per_list
-    data = get_report(
+  def position_per_list_request_params
+    {
       dimensions: 'ga:productListName,ga:productListPosition',
       metrics: 'ga:productListViews'
-    )
+    }
+  end
 
+  def position_per_list_process_result(data)
     # get the column index of each header
     headers = data.column_headers.map(&:name)
     list_name_i, pos_i, views_i = [
@@ -58,20 +86,7 @@ class GaProductReport
       end.to_h
   end
 
-  private
-
-  # Parameters doc: https://developers.google.com/analytics/devguides/reporting/core/v3/reference#q_summary
-  def get_report(parameters)
-    defaults = {
-      'ids'        => 'ga:' + view_id,
-      'start-date' => '30daysAgo',
-      'end-date'   => 'today',
-      'filters'    => "ga:productSku==#{@sku}"
-    }
-    result = client.execute(
-      api_method: analytics.data.ga.get,
-      parameters: defaults.merge(parameters.stringify_keys)
-    )
+  def result_data(result)
     if result.error?
       klass = (result.status == 403) ? Unauthorized : Error
       raise klass, "#{result.status}: #{result.error_message}"
