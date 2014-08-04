@@ -30,7 +30,7 @@ class GaProductReport
       api_method: analytics.data.ga.get,
       parameters: {
         'ids'        => 'ga:' + view_id,
-        'start-date' => '30daysAgo',
+        'start-date' => '7daysAgo',
         'end-date'   => 'today',
         'filters'    => "ga:productSku==#{@sku}"
       }.merge(params.stringify_keys)
