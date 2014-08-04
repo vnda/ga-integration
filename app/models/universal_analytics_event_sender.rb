@@ -43,13 +43,13 @@ class UniversalAnalyticsEventSender
     when 'product-viewed' then event.merge(**product_data, ea: 'Produto Visualizado', pa: 'detail')
     when 'product-added-to-cart' then event.merge(**product_data, ea: 'Adicionado ao Carrinho', pa: 'add')
     when 'product-removed-from-cart' then event.merge(**product_data, ea: 'Removido do Carrinho', pa: 'remove')
-    when 'product-listed' then event.merge(**product_data(:il1pi), il1nm: @json['list'])
+    when 'product-listed' then event.merge(**product_data(prefix: :il1pi), il1nm: @json['list'])
     when 'checkout-1-cart' then event.merge(**product_data, pa: 'checkout', cos: 1)
     when 'checkout-2-shipping-calc' then event.merge(**product_data, pa: 'checkout', cos: 2, col: @json['zip_code'])
     when 'checkout-3-shipping-mode' then event.merge(**product_data, pa: 'checkout', cos: 3, col: @json['shipping'])
     when 'checkout-4-address' then event.merge(**product_data, pa: 'checkout', cos: 4)
     when 'checkout-5-payment' then event.merge(**product_data, pa: 'checkout', cos: 5, col: @json['payment'])
-    when 'transaction' then event.merge(**product_data, **transaction_data)
+    when 'transaction' then event.merge(**product_data(products: @json['items']), **transaction_data)
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
     when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
@@ -58,11 +58,10 @@ class UniversalAnalyticsEventSender
     end
   end
 
-  def product_data(prefix=:pr)
-    prods = @json['resource']
-    prods = [prods] unless prods.is_a?(Array)
+  def product_data(products: @json['resource'], prefix: :pr)
+    products = [products] unless products.is_a?(Array)
     hash = {}
-    prods.each_with_index do |prod, index|
+    products.each_with_index do |prod, index|
       key = "#{prefix}#{index + 1}"
       hash = hash.merge(
         "#{key}id" => prod['reference'],
