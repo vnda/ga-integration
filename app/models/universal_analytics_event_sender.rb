@@ -49,6 +49,7 @@ class UniversalAnalyticsEventSender
     when 'checkout-3-shipping-mode' then event.merge(**product_data, pa: 'checkout', cos: 3, col: @json['shipping'])
     when 'checkout-4-address' then event.merge(**product_data, pa: 'checkout', cos: 4)
     when 'checkout-5-payment' then event.merge(**product_data, pa: 'checkout', cos: 5, col: @json['payment'])
+    when 'transaction' then event.merge(**product_data, **transaction_data)
     when 'cart-created' then event.merge(ea: 'Carrinho Criado', el: @json['reference'])
     when 'shipping-caculated' then event.merge(ea: 'Calculo de Frete', el: @json['zip'])
     when 'capcha-loaded' then event.merge(ea: 'Captcha exibido', el: @json['ip'])
@@ -65,7 +66,7 @@ class UniversalAnalyticsEventSender
       key = "#{prefix}#{index + 1}"
       hash = hash.merge(
         "#{key}id" => prod['reference'],
-        "#{key}nm" => prod['name'],
+        "#{key}nm" => prod['name'].presence || prod['product_name'],
         "#{key}pr" => prod['price'],
         "#{key}va" => prod['variant_name'],
         "#{key}qt" => prod['quantity'],
@@ -73,5 +74,19 @@ class UniversalAnalyticsEventSender
       )
     end
     hash.reject { |k, v| v.blank? }.symbolize_keys
+  end
+
+  def transaction_data
+    if json['status'] == 'canceled'
+      { pa: 'refund' }
+    else
+      {
+        pa: 'purchase',
+        ti: @json['code'],
+        ta: @json['email'],
+        tr: @json['total'],
+        ts: @json['shipping_price']
+      }
+    end
   end
 end
