@@ -19,13 +19,15 @@ class GaUserEvents
       ga:productDetailViews
     ].map { |h| headers.index(h) }
 
-    data.rows.map do |row|
+    data.rows.flat_map do |row|
       time = Time.strptime(row[dh] + row[m], '%Y%m%d%H%M').in_time_zone
-      event =
-        if row[adds].to_i != 0 then :add_to_cart
-        elsif row[details].to_i != 0 then :view_details
-        end
-      %i[time event reference].zip([time, event, row[sku]]).to_h
+      events = []
+      events << 'product-viewed' if row[adds].to_i != 0
+      events << 'product-added-to-cart' if row[details].to_i != 0
+
+      events.map do |e|
+        %i[time event reference].zip([time, e, row[sku]]).to_h
+      end
     end
   end
 end
