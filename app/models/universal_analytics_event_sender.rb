@@ -24,9 +24,13 @@ class UniversalAnalyticsEventSender
   end
 
   def set_client_id
-    if @json['analytics'] && @json['analytics']['_ga'].present?
-      @client_id = @json['analytics']['_ga'].split(".").values_at(2,3).join(".")
-    end
+    ga = if @json['analytics'].present?
+        @json['analytics']['_ga']
+      elsif @json['extra_fields'].present?
+        field = @json['extra_fields'].find { |f| f['name'] == '_ga' }
+        field && field['value']
+      end
+    @client_id = ga.split(".").values_at(2,3).join(".") if ga
     Rails.logger.info(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 

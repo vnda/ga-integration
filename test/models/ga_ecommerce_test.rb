@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class GaEcommerceTest < ActiveSupport::TestCase
+  def setup
+    WebMock.reset!
+  end
+
   def store; stores(:one) end
 
   def data
@@ -97,6 +101,27 @@ class GaEcommerceTest < ActiveSupport::TestCase
       .with(query: hash_including(pa: 'checkout', cos: '5', col: 'Visa'))
     json = { 'payment' => 'Visa', 'resource' => checkout_data }
     UniversalAnalyticsEventSender.new(json, store, 'checkout-5-payment').send!
+    assert_requested(stub)
+  end
+
+  test 'get cid from analytics param' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(cid: '252941435.1407291507'))
+    json = { 'analytics' => { '_ga'=>'GA1.3.252941435.1407291507' }, 'resource' => data }
+    UniversalAnalyticsEventSender.new(json, store, 'product-viewed').send!
+    assert_requested(stub)
+  end
+
+  test 'get cid from extra fields' do
+    stub = stub_request(:get, 'www.google-analytics.com/collect')
+      .with(query: hash_including(cid: '252941435.1407291507'))
+    json = {
+      'extra_fields' => [
+        { 'name' => '_ga', 'value' => 'GA1.3.252941435.1407291507' }
+      ],
+      'resource' => data
+    }
+    UniversalAnalyticsEventSender.new(json, store, 'product-viewed').send!
     assert_requested(stub)
   end
 end
