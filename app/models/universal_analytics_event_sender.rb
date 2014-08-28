@@ -20,7 +20,7 @@ class UniversalAnalyticsEventSender
     event = create_event
     RestClient.get(ENDPOINT_URL, params: event)
 
-    Rails.logger.info("Event sent: #{event.inspect}")
+    Rails.logger.debug("Event sent: #{event.inspect}")
   end
 
   def set_client_id
@@ -31,7 +31,7 @@ class UniversalAnalyticsEventSender
         field && field['value']
       end
     @client_id = ga.split(".").values_at(2,3).join(".") if ga
-    Rails.logger.info(@client_id ? "CID: #{@client_id}" : 'cid not present')
+    Rails.logger.debug(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 
   def create_event

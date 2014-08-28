@@ -22,7 +22,7 @@ class UniversalAnalyticsSender
 		ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first
 		ga_cookie_value = ga_cookie['value'] if ga_cookie
 		@client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
-    @client_id ? puts("CID: #{@client_id}") : puts("cid not present")
+    Rails.logger.debug(@client_id ? "CID: #{@client_id}" : "cid not present")
   end
 
 	def send_transaction
@@ -40,8 +40,8 @@ class UniversalAnalyticsSender
     
 		RestClient.get(ECOMMERCE_TRACKING_URL, params: transaction)
 
-		puts "Transaction: #{@json["code"]}, #{'%.2f' % (@json['total'].to_f * @multiplier)}, #{@store.name}, #{0.0}"
-    puts transaction
+		Rails.logger.debug("Transaction: #{@json["code"]}, #{'%.2f' % (@json['total'].to_f * @multiplier)}, #{@store.name}, #{0.0}")
+    Rails.logger.debug(transaction)
 	end
 
 	def send_items
@@ -61,8 +61,8 @@ class UniversalAnalyticsSender
 			
 			RestClient.get(ECOMMERCE_TRACKING_URL, params: transaction_item)
 
-			puts "Item: #{@json["code"]} - #{item['reference']} - #{'%.2f' % (item["price"].to_f * @multiplier)} - #{item['quantity']} - #{item['product_name']} #{item['variant_name']}"
-			puts transaction_item
+			Rails.logger.debug("Item: #{@json["code"]} - #{item['reference']} - #{'%.2f' % (item["price"].to_f * @multiplier)} - #{item['quantity']} - #{item['product_name']} #{item['variant_name']}")
+			Rails.logger.debug(transaction_item)
 		end		
 	end
 
