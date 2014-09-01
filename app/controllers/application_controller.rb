@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def store
+    @store ||= Store.find_by!(token: params[:token])
+  end
+
   def authenticate!
     if Rails.env == "production"
       authenticate_or_request_with_http_basic do |username, password|

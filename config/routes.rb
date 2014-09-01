@@ -3,6 +3,7 @@ Gaintegration::Application.routes.draw do
   resources :stores, except: [:show]
   resources :metrics, only: [:show]
   resources :user_events, only: [:show]
+  resource :visits, only: [:show]
 
   get :status, to: 'application#status'
 
