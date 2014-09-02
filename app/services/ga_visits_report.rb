@@ -5,7 +5,12 @@ class GaVisitsReport
   end
 
   def as_json(*)
-    names = { 'ga:dayOfWeek' => :week_day, 'ga:sessions' => :sessions, 'ga:users' => :users }
+    names = {
+      'ga:dayOfWeek' => :week_day,
+      'ga:sessions' => :sessions,
+      'ga:users' => :users,
+      'ga:transactions' => :transactions
+    }
     headers = data.column_headers.map { |ch| names[ch.name] }
     data.rows.map { |row| headers.zip(row.map(&:to_i)).to_h }
   end
@@ -15,7 +20,7 @@ class GaVisitsReport
       'start-date' => @week.beginning_of_week.strftime('%Y-%m-%d'),
       'end-date' => @week.end_of_week.strftime('%Y-%m-%d'),
       'dimensions' => 'ga:dayOfWeek',
-      'metrics' => ['ga:sessions', 'ga:users'].join(?,),
+      'metrics' => ['ga:sessions', 'ga:users', 'ga:transactions'].join(?,),
       'sort' => 'ga:dayOfWeek'
     )
   end
