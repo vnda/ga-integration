@@ -27,7 +27,7 @@ class GaVisitsReport
       by_day_params = report_params.merge('dimensions' => 'ga:dayOfWeek', 'sort' => 'ga:dayOfWeek')
       week_data, by_day_data = @client.batch_report(report_params, by_day_params)
 
-      { by_day: process_data(by_day_data), total: process_data(week_data) }
+      { by_day: process_data(by_day_data), total: process_data(week_data).first }
     end
   end
 
