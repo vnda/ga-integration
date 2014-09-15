@@ -1,6 +1,6 @@
 class VisitsController < ApplicationController
   def show
-    report = GaVisitsReport.new(store.ga_un, Time.parse(params[:start])..Time.parse(params[:end))
+    report = GaVisitsReport.new(store.ga_un, Time.parse(params[:start])..Time.parse(params[:end]))
     render json: report
   rescue ArgumentError
     render status: :bad_request, json: { error: 'week is required' }
