@@ -6,9 +6,9 @@ class GaVisitsReport
     'ga:transactions' => :transactions
   }.freeze
 
-  def initialize(property_id, week=Time.now)
+  def initialize(property_id, range)
     @client = GaClient.new(property_id)
-    @week = week
+    @range = range
   end
 
   def as_json(*)
@@ -20,8 +20,8 @@ class GaVisitsReport
   def report
     @report ||= begin
       report_params = {
-        'start-date' => @week.beginning_of_week.strftime('%Y-%m-%d'),
-        'end-date' => @week.end_of_week.strftime('%Y-%m-%d'),
+        'start-date' => @range.begin.strftime('%Y-%m-%d'),
+        'end-date' => @range.end.strftime('%Y-%m-%d'),
         'metrics' => ['ga:sessions', 'ga:users', 'ga:transactions'].join(?,)
       }
       by_day_params = report_params.merge('dimensions' => 'ga:dayOfWeek', 'sort' => 'ga:dayOfWeek')
