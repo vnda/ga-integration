@@ -17,5 +17,5 @@
 
 /config/database.yml
 /config/.secret-token
-
+/config/secrets.yml
 /.env
