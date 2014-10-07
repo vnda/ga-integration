@@ -25,7 +25,11 @@
         <td><%= store.ga_un %></td>
         <td><%= store.token %></td>
         <td><%= store.site %></td>
-        <td><%= sender_send_transaction_url(token: store.token) %></td>
+        <td>
+          <%= sender_send_transaction_url(token: store.token) %>
+          <br>
+          <%= sender_send_stathat_url(token: store.token) %>
+        </td>
         <td><%= delete_action(store) %></td>
       </tr>
     <% end %>
