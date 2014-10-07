@@ -48,6 +48,6 @@ class StoresController < ApplicationController
   end
 
   def store_params
-    params[:store].try(:permit, :name, :ga, :ga_un, :token, :site)
+    params[:store].try(:permit, :name, :ga, :ga_un, :token, :site, :stat_hat_token)
   end
 end

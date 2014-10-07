@@ -7,6 +7,7 @@ gem 'pg'
 gem 'gabba'
 gem 'pry'
 gem 'rest-client'
+gem 'stathat'
 
 gem 'google-api-client', require: 'google/api_client'
 

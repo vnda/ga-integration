@@ -8,5 +8,6 @@ Gaintegration::Application.routes.draw do
   get :status, to: 'application#status'
 
   post 'sender/send_transaction' => 'sender#send_transaction'
+  post 'sender/send_stathat' => 'sender#send_stathat'
   post 'sender/send_event' => 'sender#send_event'
 end
