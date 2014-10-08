@@ -75,8 +75,8 @@ class GaEcommerceTest < ActiveSupport::TestCase
 
   test 'checkout-2-shipping-calc' do
     stub = stub_request(:get, 'www.google-analytics.com/collect')
-      .with(query: hash_including(pa: 'checkout', cos: '2', col: '20930-040'))
-    json = { 'zip_code' => '20930-040', 'resource' => checkout_data }
+      .with(query: hash_including(pa: 'checkout', cos: '2', col: 'Rio de Janeiro'))
+    json = { 'city_name' => 'Rio de Janeiro', 'resource' => checkout_data }
     UniversalAnalyticsEventSender.new(json, store, 'checkout-2-shipping-calc').send!
     assert_requested(stub)
   end
