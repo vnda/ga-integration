@@ -29,7 +29,7 @@ class GaInternationalReport
         'filters' => 'ga:country==Brazil'
       }
       by_day_params = report_params.merge('dimensions' => ['ga:yearMonth', 'ga:region', 'ga:country'].join(?,), 'sort' => '-ga:sessions')
-      total_data, by_month_data = ga.batch_report(report_params, by_day_params)
+      total_data, by_month_data = @client.batch_report(report_params, by_day_params)
 
       { by_month: process_data(by_month_data), total: process_data(total_data).first }
     end

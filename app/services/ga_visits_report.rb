@@ -33,6 +33,6 @@ class GaVisitsReport
 
   def process_data(data)
     headers = data.column_headers.map { |ch| HEADER_NAMES[ch.name] }
-    data.rows.map { |row| headers.zip(row.map(&:to_s)).to_h }
+    data.rows.map { |row| headers.zip(row.map(&:to_i)).to_h }
   end
 end
