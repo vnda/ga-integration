@@ -1,4 +1,4 @@
-class GaInternationalReport
+class GaStateReport
   HEADER_NAMES = {
     'ga:yearMonth' => :year_month,
     'ga:region' => :region,
