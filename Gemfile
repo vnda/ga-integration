@@ -1,18 +1,23 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
+ruby '2.1.5'
 
-gem 'rails', '4.1.4'
+gem 'rails', '4.1.8'
 gem 'pg'
 gem 'gabba'
-gem 'pry'
 gem 'rest-client'
-
 gem 'google-api-client', require: 'google/api_client'
+gem 'dotenv-rails', groups: [:development, :test]
+
+group :development do
+  gem 'pry'
+end
 
 group :test do
   gem 'webmock'
 end
 
-gem 'dotenv-rails', groups: [:development, :test]
-gem 'rails_12factor', group: :production
+group :production do
+  gem "skylight"
+  gem 'rails_12factor'
+end
