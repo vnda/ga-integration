@@ -8,6 +8,7 @@ gem 'gabba'
 gem 'rest-client'
 gem 'google-api-client', require: 'google/api_client'
 gem 'dotenv-rails', groups: [:development, :test]
+gem 'puma'
 
 group :development do
   gem 'pry'
