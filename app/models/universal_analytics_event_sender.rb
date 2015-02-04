@@ -65,28 +65,19 @@ class UniversalAnalyticsEventSender
   def product_data(products: @json['resource'], prefix: :pr)
     products = [products] unless products.is_a?(Array)
     hash = {}
-    products.each_with_index do |item, index|
+    products.each_with_index do |prod, index|
       key = "#{prefix}#{index + 1}"
       hash = hash.merge(
-        "#{key}id" => item['product']['reference'],
-        "#{key}nm" => item['product']['name'].presence || item['product']['product_name'],
-        "#{key}pr" => item['product']['price'],
-        "#{key}va" => item['product']['variant_name'],
-        "#{key}qt" => item['product']['quantity'],
-        "#{key}ps" => item['product']['position'],
-        "#{key}ca" => product_category(item),
+        "#{key}id" => prod['reference'],
+        "#{key}nm" => prod['name'].presence || prod['product_name'],
+        "#{key}pr" => prod['price'],
+        "#{key}va" => prod['variant_name'],
+        "#{key}qt" => prod['quantity'],
+        "#{key}ps" => prod['position'],
       )
       puts "Produto : #{hash}"
     end
     hash.reject { |k, v| v.blank? }.symbolize_keys
-  end
-
-  def product_category(item)
-    properties = item['product']['category_tags']
-    properties.each do |p|
-      return p['name'] if p['tag_type'] == "product_category"
-    end
-    return nil
   end
 
   def transaction_data
