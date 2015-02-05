@@ -82,11 +82,10 @@ class UniversalAnalyticsEventSender
   end
 
   def product_category(prod)
-    properties = prod['category_tags']
-    properties.each do |p|
+    return "" unless prod['category_tags'].present?
+    prod['category_tags'].each do |p|
       return p['name'] if p['tag_type'] == "product_category"
     end
-    return nil
   end
 
   def transaction_data
