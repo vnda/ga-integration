@@ -76,7 +76,6 @@ class UniversalAnalyticsEventSender
         "#{key}ps" => prod['position'],
         "#{key}ca" => product_category(prod),
       )
-      puts "Produto : #{hash}"
     end
     hash.reject { |k, v| v.blank? }.symbolize_keys
   end
