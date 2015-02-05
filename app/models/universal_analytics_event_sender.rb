@@ -74,10 +74,19 @@ class UniversalAnalyticsEventSender
         "#{key}va" => prod['variant_name'],
         "#{key}qt" => prod['quantity'],
         "#{key}ps" => prod['position'],
+        "#{key}ca" => product_category(prod),
       )
       puts "Produto : #{hash}"
     end
     hash.reject { |k, v| v.blank? }.symbolize_keys
+  end
+
+  def product_category(prod)
+    properties = prod['category_tags']
+    properties.each do |p|
+      return p['name'] if p['tag_type'] == "product_category"
+    end
+    return nil
   end
 
   def transaction_data
