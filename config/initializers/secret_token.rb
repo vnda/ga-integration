@@ -1,9 +1,5 @@
-if Rails.env.production?
-  Gaintegration::Application.config.secret_token = ENV["SECRET_TOKEN"]
+Gaintegration::Application.config.secret_token = if Rails.env.production?
+  ENV["SECRET_TOKEN"]
 else
-  # run: `bin/rake secret_token:generate` if you doesn't have the secret token file yet
-  secret_token_file = Rails.root.join("config/.secret-token")
-  if secret_token_file.exist?
-    Gaintegration::Application.config.secret_key_base = secret_token_file.read
-  end
+  'e5103fea8206cb4cb3525acc9c295fe10517b8681acb9be28c5372b271da89dd3cd3a638b69c4d081eb36d4f3c4caffb2c3dead3c316eadb0fb097a63183a357'
 end
