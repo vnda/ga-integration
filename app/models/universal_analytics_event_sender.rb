@@ -89,7 +89,7 @@ class UniversalAnalyticsEventSender
 
   def transaction_data
     if @json['status'] == 'canceled'
-      { pa: 'refund' }
+      { pa: 'refund', ti: @json['code'] }
     else
       {
         pa: 'purchase',
