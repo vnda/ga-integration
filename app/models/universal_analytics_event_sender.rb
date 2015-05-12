@@ -72,7 +72,7 @@ class UniversalAnalyticsEventSender
         "#{key}nm" => prod['name'].presence || prod['product_name'],
         "#{key}pr" => prod['price'],
         "#{key}va" => prod['variant_name'],
-        "#{key}qt" => prod['quantity'],
+        "#{key}qt" => @json['status'] == 'canceled' ? prod['quantity'].to_i * -1 : prod['quantity'],
         "#{key}ps" => prod['position'],
         "#{key}ca" => product_category(prod),
       )
@@ -88,12 +88,22 @@ class UniversalAnalyticsEventSender
   end
 
   def transaction_data
-    {
-      pa: @json['status'] == 'canceled' ? 'refund' : 'purchase',
-      ti: @json['code'],
-      ta: @json['email'],
-      tr: @json['total'],
-      ts: @json['shipping_price']
-    }
+    if @json['status'] == 'canceled'
+      {
+        pa: 'refund',
+        ti: @json['code'],
+        ta: @json['email'],
+        tr: @json['total'].to_f * -1,
+        ts: @json['shipping_price'].to_f * -1
+      }
+    else
+      {
+        pa: 'purchase',
+        ti: @json['code'],
+        ta: @json['email'],
+        tr: @json['total'],
+        ts: @json['shipping_price']
+      }
+    end
   end
 end
