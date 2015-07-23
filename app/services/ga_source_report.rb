@@ -27,7 +27,7 @@ class GaSourceReport
         'end-date' => @range.end.strftime('%Y-%m-%d'),
         'metrics' => ['ga:sessions', 'ga:users', 'ga:pageviews', 'ga:transactions', 'ga:source', 'ga:medium'].join(?,)
       }
-      by_day_params = report_params.merge('dimensions' => 'ga:yearMonth', 'sort' => 'ga:yearMonth')
+      by_day_params = report_params.merge('dimensions' => 'ga:source,ga:medium', 'sort' => '-ga:sessions')
       total_data, by_month_data = @client.batch_report(report_params, by_day_params)
 
       { by_month: process_data(by_month_data), total: process_data(total_data).first }
