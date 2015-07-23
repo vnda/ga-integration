@@ -21,9 +21,6 @@ class GaSourceReport
   end
 
   private
-dimensions=ga:source,ga:medium
-metrics=ga:sessions,ga:transactionRevenue,ga:transactions,ga:uniquePurchases
-sort=-ga:sessions
 
   def report
     @report ||= begin
