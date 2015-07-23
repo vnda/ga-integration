@@ -7,6 +7,7 @@ Gaintegration::Application.routes.draw do
   resource :monthly_visits, only: [:show]
   resource :international_visits, only: [:show]
   resource :state_visits, only: [:show]
+  resource :source_stats, only: [:show]
 
   get :status, to: 'application#status'
 

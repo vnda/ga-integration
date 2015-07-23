@@ -7,8 +7,7 @@ class GaSourceReport
     'ga:transactions' => :transactions,
     'ga:source' => :source,
     'ga:medium' => :medium,
-    'ga:transactionRevenue' => :revenue,
-    'ga:uniquePurchases' => :unique_purchases
+    'ga:transactionRevenue' => :revenue
   }.freeze
 
   def initialize(property_id, range)
@@ -28,7 +27,7 @@ class GaSourceReport
         'start-date' => @range.begin.strftime('%Y-%m-%d'),
         'end-date' => @range.end.strftime('%Y-%m-%d'),
         'filters' => 'ga:transactions!=0',
-        'metrics' => ['ga:sessions', 'ga:users', 'ga:pageviews', 'ga:transactions', 'ga:transactionRevenue', 'ga:uniquePurchases'].join(?,)
+        'metrics' => ['ga:sessions', 'ga:users', 'ga:pageviews', 'ga:transactions', 'ga:transactionRevenue'].join(?,)
       }
       by_day_params = report_params.merge('dimensions' => 'ga:source,ga:medium', 'sort' => '-ga:transactions')
       total_data, by_month_data = @client.batch_report(report_params, by_day_params)
