@@ -32,7 +32,7 @@ class GaSourceReport
       by_day_params = report_params.merge('dimensions' => 'ga:source,ga:medium', 'sort' => '-ga:transactions')
       total_data, by_month_data = @client.batch_report(report_params, by_day_params)
 
-      { by_month: process_data(by_month_data), total: process_data(total_data).first }
+      { by_source_medium: process_data(by_month_data), total: process_data(total_data).first }
     end
   end
 
