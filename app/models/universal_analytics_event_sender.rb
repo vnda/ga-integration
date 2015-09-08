@@ -34,6 +34,15 @@ class UniversalAnalyticsEventSender
     Rails.logger.debug(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 
+  def user_data
+    data = {}
+    if @json['analytics'].present?
+      data.merge!({uip: @json['analytics']['ip']}) if @json['analytics']['ip'].present?
+      data.merge!({ua: @json['analytics']['user_agent']}) if @json['analytics']['user_agent'].present?
+    end
+    data
+  end
+
   def create_event
     event = {
       v: 1,
@@ -41,7 +50,7 @@ class UniversalAnalyticsEventSender
       cid: @client_id || DEFAULT_CLIENT_ID,
       t: 'event',
       ec: 'VNDA Ecommerce'
-    }
+    }.merge!(user_data)
 
     case @event_type
     when 'product-viewed' then event.merge(**product_data, ea: 'Produto Visualizado', pa: 'detail')
