@@ -11,7 +11,7 @@ class SenderController < ActionController::Base
 
   def send_event
   	if(@store and @json and @store.ga_un?)
-    	UniversalAnalyticsEventSender.new(@json, @store, params[:event_type]).send!
+    	UniversalAnalyticsEventSender.new(@json, @store, params[:event_type]).send! if params[:analytics] && params[:analytics][:"_ga"].present?
     end
 
   	render json: 'ok'
