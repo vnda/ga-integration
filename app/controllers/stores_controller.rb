@@ -1,5 +1,6 @@
 class StoresController < ApplicationController
   before_filter :authenticate!
+  protect_from_forgery except: [:create]
 
   def index
   end
@@ -10,12 +11,15 @@ class StoresController < ApplicationController
   def edit
   end
 
+  #curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --user vnda:xxxxxxxx http://localhost:3000/stores
   def create
     respond_to do |format|
       if resource.save
         format.html { redirect_to stores_path, notice: I18n.t(:create, scope: [:flashes, :store]) }
+        format.json { render json: resource.token, status: 201 }
       else
         format.html { render action: 'new' }
+        format.json { render json: resource }
       end
     end
   end
