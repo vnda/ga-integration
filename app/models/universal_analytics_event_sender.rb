@@ -33,7 +33,7 @@ class UniversalAnalyticsEventSender
         @json['extra']['_ga']
       end
     @client_id = ga.split(".").values_at(2,3).join(".") if ga
-    Rails.logger.debug(@client_id ? "CID: #{@client_id}" : 'cid not present')
+    Rails.logger.info(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 
   def user_data
@@ -42,7 +42,7 @@ class UniversalAnalyticsEventSender
       data.merge!({uip: @json['analytics']['ip']}) if @json['analytics']['ip'].present?
       data.merge!({ua: @json['analytics']['user_agent']}) if @json['analytics']['user_agent'].present?
     end
-    puts "Override user data: #{data}"
+    Rails.logger.info("Override user data: #{data}")
     data
   end
 
