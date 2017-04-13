@@ -29,7 +29,7 @@ class UniversalAnalyticsEventSender
       elsif @json['extra_fields'].present?
         field = @json['extra_fields'].find { |f| f['name'] == '_ga' }
         field && field['value']
-      elsif @json['extra'].present? && @json['_ga'].present?
+      elsif @json['extra'].present? && @json['extra']['_ga'].present?
         @json['extra']['_ga']
       end
     @client_id = ga.split(".").values_at(2,3).join(".") if ga
