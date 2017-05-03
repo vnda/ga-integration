@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20140513163426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "stores", force: true do |t|
     t.string   "name"
