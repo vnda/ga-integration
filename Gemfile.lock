@@ -132,13 +132,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dotenv-rails
-  gabba
-  google-api-client
-  pg
-  pry
-  puma
+  dotenv-rails (= 0.11.1)
+  gabba (= 1.0.1)
+  google-api-client (= 0.7.1)
+  pg (= 0.17.1)
+  pry (= 0.10.0)
+  puma (= 2.10.2)
   rails (= 4.1.10)
-  rails_12factor
-  rest-client
-  webmock
+  rails_12factor (= 0.0.2)
+  rest-client (= 1.7.2)
+  webmock (= 1.18.0)
+
+RUBY VERSION
+   ruby 2.3.0p0
+
+BUNDLED WITH
+   1.14.6
