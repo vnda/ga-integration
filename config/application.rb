@@ -21,7 +21,6 @@ module Gaintegration
     config.i18n.enforce_available_locales = false
     config.i18n.default_locale = :'pt-BR'
     config.assets.enabled = false
-    config.filter_parameters << :resource
 
     config.google_api = {
       p12_key: Base64.strict_decode64(ENV['GOOGLE_API_P12'].gsub(/\s+/, '')),

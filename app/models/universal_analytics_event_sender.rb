@@ -42,7 +42,6 @@ class UniversalAnalyticsEventSender
       data.merge!({uip: @json['analytics']['ip']}) if @json['analytics']['ip'].present?
       data.merge!({ua: @json['analytics']['user_agent']}) if @json['analytics']['user_agent'].present?
     end
-    Rails.logger.info("Override user data: #{data}")
     data
   end
 
