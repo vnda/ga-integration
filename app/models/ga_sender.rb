@@ -1,5 +1,4 @@
 class GaSender
-
   def initialize(json, store)
     @json = json
     @store = store
@@ -60,5 +59,4 @@ class GaSender
       "Brasil"
     )
   end
-
 end

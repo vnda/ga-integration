@@ -1,5 +1,4 @@
 class UniversalAnalyticsEventSender
-
   ENDPOINT_URL = 'http://www.google-analytics.com/collect'
   DEFAULT_CLIENT_ID = '555'
 
