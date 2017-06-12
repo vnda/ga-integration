@@ -8,6 +8,7 @@ gem 'gabba', '1.0.1'
 gem 'rest-client', '1.7.2'
 gem 'puma', '2.10.2'
 gem 'google-api-client', '0.7.1', require: 'google/api_client'
+gem 'honeybadger', '3.1.2'
 
 gem 'rake', '11.3.0', require: false
 
