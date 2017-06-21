@@ -18,8 +18,7 @@ class UniversalAnalyticsEventSender
   def send_event
     event = create_event
     RestClient.get(ENDPOINT_URL, params: event)
-
-    Rails.logger.debug("Event sent: #{event.inspect}")
+    Rails.logger.info(event.to_json)
   end
 
   def set_client_id
