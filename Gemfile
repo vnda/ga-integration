@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.4.1'
 
-gem 'rails', '4.2.8'
+gem 'rails', '4.2.10'
 gem 'pg', '0.21.0'
 gem 'gabba', '1.0.1'
 gem 'rest-client', '1.7.2'
