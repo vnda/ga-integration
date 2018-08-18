@@ -18,10 +18,18 @@ class UniversalAnalyticsSender
   private
 
   def set_client_id
-    ga_cookie = @json['extra_fields'].select{|field| field['name'] == '_ga'}.first
-    ga_cookie = @json['extra'].select{|field| field['name'] == '_ga'}.first unless ga_cookie
-    ga_cookie_value = ga_cookie['value'] if ga_cookie
-    @client_id = ga_cookie_value.split(".").values_at(2,3).join(".") if ga_cookie_value
+    ga_cookie = @json['extra_fields'].select{ |f| f['name'] == '_ga' }.first
+    ga_cookie_value =
+      if ga_cookie
+        ga_cookie['value']
+      else
+        @json.dig('extra', '_ga')
+      end
+
+    if ga_cookie_value
+      @client_id = ga_cookie_value.split(".").values_at(2,3).join(".")
+    end
+
     Rails.logger.debug(@client_id ? "CID: #{@client_id}" : "cid not present")
   end
 
