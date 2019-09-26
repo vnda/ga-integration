@@ -40,7 +40,6 @@ class UniversalAnalyticsSender
       cid: @client_id || DEFAULT_CLIENT_ID,
       t: 'transaction',
       ti: @json["code"],
-      ta: @json['email'],
       tr: '%.2f' % (@json['total'].to_f * @multiplier),
       tt: 0.0,
       ts: @json['shipping_price']

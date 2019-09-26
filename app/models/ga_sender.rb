@@ -51,7 +51,7 @@ class GaSender
     @sender.transaction(
       @json["code"],
       '%.2f' % (@json['total'].to_f * @multiplier),
-      @json['email'],
+      '',
       0.0,
       @json['shipping_price'],
       "#{@json['city']} - #{@json['state']}",

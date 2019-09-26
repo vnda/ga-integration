@@ -101,7 +101,6 @@ class UniversalAnalyticsEventSender
       {
         pa: 'refund',
         ti: @json['code'],
-        ta: @json['email'],
         tr: @json['total'].to_f * -1,
         ts: @json['shipping_price'].to_f * -1
       }
@@ -109,7 +108,6 @@ class UniversalAnalyticsEventSender
       {
         pa: 'purchase',
         ti: @json['code'],
-        ta: @json['email'],
         tr: @json['total'],
         ts: @json['shipping_price']
       }
