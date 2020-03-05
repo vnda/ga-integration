@@ -42,7 +42,8 @@ class UniversalAnalyticsSender
       ti: @json["code"],
       tr: '%.2f' % (@json['total'].to_f * @multiplier),
       tt: 0.0,
-      ts: @json['shipping_price']
+      ts: @json['shipping_price'],
+      tcc: @json['coupon_code']
     }
 
     RestClient.get(ECOMMERCE_TRACKING_URL, params: transaction)
