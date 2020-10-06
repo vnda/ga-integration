@@ -10,6 +10,7 @@ class UniversalAnalyticsSender
 
   def send!
     return if(@json['status'] == 'confirmed')
+    return unless @json['channel'] == 'ecommerce'
     set_client_id
     send_items
     send_transaction
