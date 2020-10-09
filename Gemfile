@@ -20,7 +20,7 @@ group :development, :test do
 end
 
 group :development, :test do
-  gem 'webmock', '3.7.5'
+  gem 'webmock', '3.9.1'
 end
 
 group :production do
