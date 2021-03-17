@@ -1,0 +1,12 @@
+development: &DEVELOPMENT
+  adapter: postgis
+  host: localhost
+  encoding: utf8
+  database: gaintegration_development
+  pool: 5
+  username:
+  password:
+
+test:
+  <<: *DEVELOPMENT
+  database: gaintegration_test
