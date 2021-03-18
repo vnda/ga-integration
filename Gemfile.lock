@@ -75,7 +75,6 @@ GEM
       signet (>= 0.5.0)
       uuidtools (>= 2.1.0)
     hashdiff (1.0.1)
-    honeybadger (4.5.1)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -161,6 +160,8 @@ GEM
     rgeo-activerecord (4.0.5)
       activerecord (~> 4.2)
       rgeo (~> 0.3)
+    sentry-raven (2.13.0)
+      faraday (>= 0.7.6, < 1.0)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -194,7 +195,6 @@ DEPENDENCIES
   dotenv-rails (= 2.7.5)
   gabba (= 1.0.1)
   google-api-client (= 0.7.1)
-  honeybadger (= 4.5.1)
   lograge (= 0.11.2)
   pg (= 0.21.0)
   pry (= 0.12.2)
@@ -202,6 +202,7 @@ DEPENDENCIES
   rails (= 4.2.11.1)
   rails_12factor (= 0.0.3)
   rest-client (= 2.1.0)
+  sentry-raven (= 2.13.0)
   webmock (= 3.9.1)
 
 RUBY VERSION

@@ -9,7 +9,7 @@ gem 'gabba', '1.0.1'
 gem 'rest-client', '2.1.0'
 gem 'puma', '4.3.5'
 gem 'google-api-client', '0.7.1', require: 'google/api_client'
-gem 'honeybadger', '4.5.1'
+gem 'sentry-raven', '2.13.0'
 gem 'lograge', '0.11.2'
 
 group :development do
