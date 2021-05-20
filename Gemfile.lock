@@ -30,6 +30,9 @@ GEM
       activemodel (= 4.2.11.1)
       activesupport (= 4.2.11.1)
       arel (~> 6.0)
+    activerecord-postgis-adapter (3.1.5)
+      activerecord (~> 4.2)
+      rgeo-activerecord (>= 4.0.4)
     activesupport (4.2.11.1)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -154,6 +157,10 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.0.2)
+    rgeo (0.6.0)
+    rgeo-activerecord (4.0.5)
+      activerecord (~> 4.2)
+      rgeo (~> 0.3)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -183,6 +190,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-postgis-adapter (= 3.1.5)
   dotenv-rails (= 2.7.5)
   gabba (= 1.0.1)
   google-api-client (= 0.7.1)
@@ -200,4 +208,4 @@ RUBY VERSION
    ruby 2.5.5p157
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
