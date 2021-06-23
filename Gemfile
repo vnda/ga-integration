@@ -11,6 +11,7 @@ gem 'puma', '4.3.8'
 gem 'google-api-client', '0.7.1', require: 'google/api_client'
 gem 'sentry-raven', '2.13.0'
 gem 'lograge', '0.11.2'
+gem 'awesome_print', '1.9.2'
 
 group :development do
   gem 'pry', '0.12.2'
