@@ -17,8 +17,8 @@ class UniversalAnalyticsEventSender
 
   def send_event
     event = create_event
-    RestClient.get(ENDPOINT_URL, params: event)
-    Rails.logger.info(event.to_json)
+    response = RestClient.get(ENDPOINT_URL, params: event)
+    { response_code: response.code, cid: @client_id, payload: event }
   end
 
   def set_client_id
@@ -31,7 +31,6 @@ class UniversalAnalyticsEventSender
         @json['extra']['_ga']
       end
     @client_id = ga.split(".").values_at(2,3).join(".") if ga
-    Rails.logger.info(@client_id ? "CID: #{@client_id}" : 'cid not present')
   end
 
   def user_data

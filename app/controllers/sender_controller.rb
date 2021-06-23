@@ -10,7 +10,7 @@ class SenderController < ActionController::Base
 
   def send_event
     if @store && @json && @store.ga_un?
-      UniversalAnalyticsEventSender.new(@json, @store, params[:event_type]).send!
+      @ga_payload = UniversalAnalyticsEventSender.new(@json, @store, params[:event_type]).send!
     end
 
     render json: 'ok'
@@ -21,5 +21,11 @@ class SenderController < ActionController::Base
   def set_store_and_json
     @store = Store.where(token: params["token"]).first
     @json = JSON.parse(request.body.read)
+  end
+
+  def append_info_to_payload(payload)
+    super
+    payload[:host] = @store&.site
+    payload[:ga] = @ga_payload
   end
 end
